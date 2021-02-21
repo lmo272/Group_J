@@ -5,11 +5,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
 class DataHandler:
 
-    def __init__(self):
-        self.data_frame = []
+    def __init__(self, dataframe = pd.DataFrame()):
+        self.dataframe = dataframe
 
     # Method 1
     def download_file(file_link: str, output_file: str):
@@ -35,8 +34,8 @@ class DataHandler:
         """
 
         # If file doesn't exist, download it. Else, print a warning message.
-        if not os.path.exists(f"./downloads/{output_file}"):
-            urlretrieve(file_link, filename=f"./downloads/{output_file}")
+        if not os.path.exists(f"../downloads/{output_file}"):
+            urlretrieve(file_link, filename=f"../downloads/{output_file}")
         else:
             print("File already exists!")
 
@@ -54,7 +53,7 @@ class DataHandler:
 
         Returns
         ---------
-        dataframe head
+        A success message
 
 
         Example
@@ -62,9 +61,12 @@ class DataHandler:
         zip_to_dataframe("data.zip", csv_file="day.csv")
         """
 
-        zip_contents = zipfile.ZipFile(f"./downloads/{output_file}")
-        data_frame = pd.read_csv(zip_contents.open(csv_file))
-        self.data_frame = data_frame
+        zip_contents = zipfile.ZipFile(f"../downloads/{output_file}")
+        try:
+            self.dataframe = pd.read_csv(zip_contents.open(csv_file))
+        except:
+            e = sys.exc_info()[0]
+            print(e)
 
     # Method 3
     def plot_correlation_matrix(data_frame: str):
