@@ -2,16 +2,18 @@ from urllib.request import urlretrieve
 import os
 import zipfile
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 class DataHandler:
-    def __init__(self,file_link, output_file, csv_file):
-        self.file_link = file_link
-        self.output_file = output_file
-        self.csv_file = csv_file
+    
+    
+    def __init__(self):
+        self.data_frame = []
 
-    #Module 1
-    def download_file(file_link: str, output_file: str='file.zip'):
+    #Method 1
+    def download_file(file_link: str, output_file: str):
         """
         Downloads a file from an URL into the /downloads directory on your hard drive.
         
@@ -40,8 +42,8 @@ class DataHandler:
             print("File already exists!")
     
     
-    #Module 2
-    def zip_to_dataframe(output_file: str, csv_file: str):
+    #Method 2
+    def zip_to_dataframe(self, output_file: str, csv_file: str):
         """
         Creates a pandas dataframe from a csv file inside a specifc zip archive (within your /downloads directory)
         
@@ -59,11 +61,42 @@ class DataHandler:
         
         Example
         ---------
-        zip_to_dataframe("data.zip", csv_file="day.csv", dataframe_name="daydf")
+        zip_to_dataframe("data.zip", csv_file="day.csv")
         """
         
         zip_contents = zipfile.ZipFile(f"./downloads/{output_file}")
-        df = pd.read_csv(zip_contents.open(csv_file))
-        return df.head()
-        
+        data_frame = pd.read_csv(zip_contents.open(csv_file))
+        self.data_frame = data_frame
     
+    #Method 3
+    def plot_correlation_matrix(data_frame: str):
+        """
+        Plots a correlation matrix for month, humidity, weather situation,
+        temperature, windspeed, and total number of bike rentals
+        
+        Parameters
+        ------------
+        dataframe: str
+            A string containing the name the pandas dataframe, which should be plotted
+            
+        Returns
+        ---------
+        seaborn correlation matrix
+        """    
+        sns.heatmap(data_frame[["mnth", "weathersit", "temp", "windspeed", "cnt"]].corr())
+    
+    #Method 4
+    def plot_weekly_data(week: int):
+        """
+        Plots the data of a chosen week 
+        
+        Parameters
+        ------------
+        week: int
+            A integer for the chosen week which has to be plotted
+            
+        Returns
+        ------------
+        Plot of the data of the chosen week
+        """
+        plt.show()
