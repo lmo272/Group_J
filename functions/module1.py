@@ -9,8 +9,8 @@ import seaborn as sns
 class DataHandler:
     
     
-    def __init__(self):
-        self.data_frame = []
+    def __init__(self, dataframe = pd.DataFrame()):
+        pass
 
     #Method 1
     def download_file(file_link: str, output_file: str):
@@ -43,7 +43,7 @@ class DataHandler:
     
     
     #Method 2
-    def zip_to_dataframe(self, output_file: str, csv_file: str):
+    def zip_to_dataframe(output_file: str, csv_file: str):
         """
         Creates a pandas dataframe from a csv file inside a specifc zip archive (within your /downloads directory)
         
@@ -65,8 +65,7 @@ class DataHandler:
         """
         
         zip_contents = zipfile.ZipFile(f"./downloads/{output_file}")
-        data_frame = pd.read_csv(zip_contents.open(csv_file))
-        self.data_frame = data_frame
+        dataframe = pd.read_csv(zip_contents.open(csv_file))
     
     #Method 3
     def plot_correlation_matrix(data_frame: str):
