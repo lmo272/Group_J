@@ -34,7 +34,7 @@ class DataHandler:
         
         Example
         ---------
-        download_file("https://archive.ics.uci.edu/ml/machine-learning-databases/00320/student.zip", output_file='student.zip')
+        download_file("https://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip", output_file='data.zip')
         """
     
         # If file doesn't exist, download it. Else, print a warning message.
