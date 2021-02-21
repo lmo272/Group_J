@@ -53,7 +53,7 @@ class DataHandler:
 
         Returns
         ---------
-        A success message
+        Nothing
 
 
         Example
@@ -62,11 +62,8 @@ class DataHandler:
         """
 
         zip_contents = zipfile.ZipFile(f"../downloads/{output_file}")
-        try:
-            self.dataframe = pd.read_csv(zip_contents.open(csv_file))
-        except:
-            e = sys.exc_info()[0]
-            print(e)
+        # Stores unzipped DataFrame as instance attribute "dataframe".
+        self.dataframe = pd.read_csv(zip_contents.open(csv_file))
 
     # Method 3
     def plot_correlation_matrix(data_frame: str):
