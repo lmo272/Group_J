@@ -1,13 +1,14 @@
 from urllib.request import urlretrieve
-import os
-import zipfile
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import math
+import os
+import zipfile
 
 class DataHandler:
 
-    def __init__(self, dataframe = pd.DataFrame()):
+    def __init__(self, dataframe=pd.DataFrame()):
         self.dataframe = dataframe
 
     # Method 1
@@ -30,7 +31,8 @@ class DataHandler:
 
         Example
         ---------
-        download_file("https://archive.ics.uci.edu/ml/machine-learning-databases/00320/student.zip", output_file='student.zip')
+        download_file("https://archive.ics.uci.edu/ml/machine-learning-databases/00320/student.zip",
+        output_file='student.zip')
         """
 
         # If file doesn't exist, download it. Else, print a warning message.
@@ -60,30 +62,24 @@ class DataHandler:
         ---------
         zip_to_dataframe("data.zip", csv_file="day.csv")
         """
-
         zip_contents = zipfile.ZipFile(f"../downloads/{output_file}")
         # Stores unzipped DataFrame as instance attribute "dataframe".
         self.dataframe = pd.read_csv(zip_contents.open(csv_file))
 
     # Method 3
-    def plot_correlation_matrix(data_frame: str):
+    def plot_correlation_matrix(self):
         """
         Plots a correlation matrix for month, humidity, weather situation,
         temperature, windspeed, and total number of bike rentals
 
-        Parameters
-        ------------
-        dataframe: str
-            A string containing the name the pandas dataframe, which should be plotted
-
         Returns
         ---------
-        seaborn correlation matrix
+        Seaborn correlation matrix
         """
-        sns.heatmap(data_frame[["mnth", "weathersit", "temp", "windspeed", "cnt"]].corr())
+        sns.heatmap(self.dataframe[["mnth", "weathersit", "temp", "windspeed", "cnt"]].corr())
 
     # Method 4
-    def plot_weekly_data(week: int):
+    def plot_weekly_data(self, week: int):
         """
         Plots the data of a chosen week
 
@@ -96,4 +92,25 @@ class DataHandler:
         ------------
         Plot of the data of the chosen week
         """
+        if week > 102 or week < 0:
+            raise ValueError("Specified week outside of allowed range. Week must be between 0 and 102.")
+
+        dates = list(dict.fromkeys(self.dataframe.dteday))
+
+        keys = dates
+        x = 0
+
+        weeks = []
+        for date in dates:
+            x = x + 1 / 7
+            weeks.append(math.floor(x))
+
+        date_week = dict(zip(keys, weeks))
+        self.dataframe["week"] = self.dataframe["dteday"].map(date_week)
+
+        plt.style.use("seaborn")
+        self.dataframe.loc[self.dataframe["week"] == week].plot("instant", "cnt", figsize=(15, 9))
+        plt.title(f"Number of Bike rentals in week {week}", fontsize=20, fontweight="bold")
+        plt.ylabel("# of bike rentals", fontsize=16)
+        plt.xlabel("instant", fontsize=16)
         plt.show()
