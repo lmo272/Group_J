@@ -76,8 +76,8 @@ class DataHandler:
         """
 
         # If file doesn't exist, download it. Else, print a warning message.
-        if not os.path.exists(f"../downloads/{output_file}"):
-            urlretrieve(file_link, filename=f"../downloads/{output_file}")
+        if not os.path.exists(f"./downloads/{output_file}"):
+            urlretrieve(file_link, filename=f"./downloads/{output_file}")
         else:
             print("File already exists!")
 
@@ -104,7 +104,7 @@ class DataHandler:
         ---------
         zip_to_dataframe("data.zip", csv_file="day.csv")
         """
-        zip_contents = zipfile.ZipFile(f"../downloads/{output_file}")
+        zip_contents = zipfile.ZipFile(f"./downloads/{output_file}")
         # Stores unzipped DataFrame as instance attribute "dataframe".
         self.dataframe = pd.read_csv(zip_contents.open(csv_file))
 
