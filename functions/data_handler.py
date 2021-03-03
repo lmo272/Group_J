@@ -104,7 +104,7 @@ class DataHandler:
         Seaborn correlation matrix
         """
         sns.heatmap(
-            self.dataframe[["mnth", "weathersit", "temp", "windspeed", "cnt"]].corr()
+            self.dataframe[["mnth", "weathersit", "temp", "windspeed", "cnt"]].corr(), annot=True
         )
         plt.title("Correlation between month, weathersituation, temperature, windspeed and bike rentals", 
                   fontdict={"weight" : "bold",
