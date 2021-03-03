@@ -61,8 +61,8 @@ class DataHandler:
         Nothing
         Example
         ---------
-        download_file("https://archive.ics.uci.edu/ml/machine-learning-databases/00320/student.zip",
-        output_file='student.zip')
+        download_file("https://archive.ics.uci.edu/ml/machine-learning-databases/00275/Bike-Sharing-Dataset.zip",
+        output_file='Bike-Sharing-Dataset.zip')
         """
 
         # If file doesn't exist, download it. Else, print a warning message.
@@ -124,7 +124,7 @@ class DataHandler:
         """
         if week > 102 or week < 0:
             raise ValueError("""Specified week outside of allowed range.
-                             Week must be between 0 and 102.""")
+                             Week must be integer between 0 and 102.""")
 
         dates = list(dict.fromkeys(self.dataframe.dteday))
 
