@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
+
 class DataHandler:
     """
     A class to hold data and perform basic exploratory data operations.
@@ -74,7 +75,7 @@ class DataHandler:
     # Method 2
     def zip_to_dataframe(self, output_file: str, csv_file: str):
         """
-        Creates a pandas dataframe from a csv file
+        Creates a pandas dataframe from a csv file with daily datetime as index
         inside a specific zip archive (within your /downloads directory)
         Parameters
         ------------
@@ -93,7 +94,9 @@ class DataHandler:
         zip_contents = zipfile.ZipFile(f"./downloads/{output_file}")
         # Stores unzipped DataFrame as instance attribute "dataframe".
         self.dataframe = pd.read_csv(zip_contents.open(csv_file))
-
+        self.dataframe.dteday = pd.to_datetime(self.dataframe.dteday)
+        self.dataframe = self.dataframe.set_index("dteday")
+        
     # Method 3
     def plot_correlation_matrix(self):
         """
@@ -126,7 +129,7 @@ class DataHandler:
             raise ValueError("""Specified week outside of allowed range.
                              Week must be integer between 0 and 102.""")
 
-        dates = list(dict.fromkeys(self.dataframe.dteday))
+        dates = list(dict.fromkeys(self.dataframe.index))
 
         keys = dates
         counter = 0
@@ -137,7 +140,7 @@ class DataHandler:
             weeks.append(math.floor(counter))
 
         date_week = dict(zip(keys, weeks))
-        self.dataframe["week"] = self.dataframe["dteday"].map(date_week)
+        self.dataframe["week"] = self.dataframe.index.map(date_week)
 
         plt.style.use("seaborn")
         self.dataframe.loc[self.dataframe["week"] == week].\
@@ -146,4 +149,24 @@ class DataHandler:
                   fontsize=20, fontweight="bold")
         plt.ylabel("# of bike rentals", fontsize=16)
         plt.xlabel("instant", fontsize=16)
+        plt.show()
+           
+    #Method 5
+    def plot_monthly_average(self):
+        """
+        Plots the average total rentals by month of the year
+        Parameters
+        ------------
+        None
+        Returns
+        ------------
+        Barchart with the average total rentals by month of the year
+        """
+        plt.style.use("seaborn")
+        plt.bar(x=self.dataframe.index.month, 
+                height=self.dataframe.cnt*0.5)
+        plt.title("Average total rentals by month of the year",
+                   fontsize=20, fontweight="bold")
+        plt.ylabel("# of bike rentals", fontsize=16)
+        plt.xlabel("month", fontsize=16)
         plt.show()
