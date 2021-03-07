@@ -15,6 +15,7 @@ from dataenforce import Dataset
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import datetime
 
 
 
@@ -170,4 +171,31 @@ class DataHandler:
                    fontsize=20, fontweight="bold")
         plt.ylabel("# of bike rentals", fontsize=16)
         plt.xlabel("month", fontsize=16)
+        plt.show()
+        
+    #Method 6
+    def forecast(self, month: int):
+        """
+        """
+        df_month = self.dataframe.loc[self.dataframe.index.month == month]
+        df_month = df_month.groupby(["weekday","hr"]).cnt.agg(["mean", "std"])
+        df_month.index = df_month.index.get_level_values(1)
+        df_month = df_month.reset_index()
+        fig, ax = plt.subplots(figsize=(15,9))
+
+        datetime_object = datetime.datetime.strptime(str(month), "%m")
+        full_month_name = datetime_object.strftime("%B")
+
+        ax.fill_between(df_month.index,
+                        df_month['mean']-df_month['std'],
+                        df_month['mean']+df_month['std'],
+                        alpha=0.4)
+
+        df_month['mean'].plot(ax=ax)
+
+        ax.set_ylabel("# of bike rentals", fontsize=16)
+        ax.set_xlabel("hour", fontsize=16)
+
+        plt.title(f"Expected weekly rentals in {full_month_name}",
+                  fontsize=20, fontweight="bold")
         plt.show()
