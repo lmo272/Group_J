@@ -165,8 +165,8 @@ class DataHandler:
         Barchart with the average total rentals by month of the year
         """
         plt.style.use("seaborn")
-        plt.bar(x=self.dataframe.index.month, 
-                height=self.dataframe.cnt*0.5)
+        plt.bar(x=range(1,13), 
+                height=self.dataframe.groupby(self.dataframe.index.month).sum("cnt")["cnt"].values*0.5)
         plt.title("Average total rentals by month of the year",
                    fontsize=20, fontweight="bold")
         plt.ylabel("# of bike rentals", fontsize=16)
