@@ -96,6 +96,7 @@ class DataHandler:
         self.dataframe = pd.read_csv(zip_contents.open(csv_file))
         self.dataframe.dteday = pd.to_datetime(self.dataframe.dteday)
         self.dataframe = self.dataframe.set_index("dteday")
+        self.dataframe.index +=  pd.to_timedelta( self.dataframe.hr, unit='h')
         
     # Method 3
     def plot_correlation_matrix(self):
