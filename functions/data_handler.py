@@ -4,7 +4,12 @@ performs data imports and basic plotting.
 Classes:
     DataHandler
 Functions:
-    None
+    download_file
+    zip_to_dataframe
+    plot_correlation_matrix
+    plot_weekly_data
+    plot_monthly_average
+    forecast
 """
 
 import math
@@ -34,11 +39,16 @@ class DataHandler:
     zip_to_dataframe(output_file: str, csv_file: str):
       Creates a pandas dataframe from a csv file inside
       a specific zip archive (within your /downloads directory).
-    plot_correlation_matrix:
+    plot_correlation_matrix(self):
       Plots a correlation matrix for month, humidity, weather situation,
         temperature, windspeed, and total number of bike rentals
     plot_weekly_data(week: int):
       Plots the data of a chosen week
+    plot_monthly_average(self):
+        Plots the average total rentals by month of the year
+    forecast(self, month: int):
+        Plots the bike rental forecast for a 168-hour period (a Mon-Sun week)
+        corresponding to the average rental with a shaded area corresponding to an interval of [-1 std deviation, +1 std deviation.].
     """
 
     def __init__(self, dataframe: Dataset = pd.DataFrame()):
@@ -162,7 +172,7 @@ class DataHandler:
         None
         Returns
         ------------
-        Barchart with the average total rentals by month of the year
+        Vertical Barchart with the average total rentals by month of the year
         """
         plt.style.use("seaborn")
         plt.bar(x=self.dataframe.index.month, 
@@ -176,6 +186,25 @@ class DataHandler:
     #Method 6
     def forecast(self, month: int):
         """
+        Plots the bike rental forecast for a 168-hour period (a Mon-Sun week)
+        together with the rental forecast [-1 std deviation, +1 std deviation.], shown in shaded area.
+                
+        Parameters
+        ------------
+        month: int
+            A integer between 1-12 inclusive, representing the months of a year (January-December)
+        df_month
+        
+        Returns
+        ---------
+        A plot with two visual elements. The plot has a 168h period on the x-axis and the number of bikes rented
+        on the y-axis
+        The first visual element is the red line showing the expected rentals for that week based on the average rentals of the two years in the dataset.
+        The second visual elements is the gray shayed area, representing the expected rental for the week
+        +and- one std deviation.
+        Example
+        ---------
+        forecast(3)
         """
         df_month = self.dataframe.loc[self.dataframe.index.month == month]
         df_month = df_month.groupby(["weekday","hr"]).cnt.agg(["mean", "std"])
