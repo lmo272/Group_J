@@ -3,11 +3,11 @@ This repository contains a data handler class created by Group_J for Advanced Pr
 
 The team consists of:
 
-- Lennart Max Oser, Student ID **44379**
-- Niclas Frederic Sturm, Student ID **45914**
-- Frederic Soegaard Nielson, Student ID **44898**
+- Lennart Max Oser: Student ID **44379**
+- Niclas Frederic Sturm: Student ID **45914**
+- Frederic Soegaard Nielson: Student ID **44898**
 - Adrian Bohrer: Student ID **44973**
-- Gideon Stuelb, Student ID **45648**
+- Gideon Stuelb: Student ID **45648**
 
 Description of the project:
 
