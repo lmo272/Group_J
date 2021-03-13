@@ -118,6 +118,9 @@ class DataHandler:
         Returns
         ---------
         Seaborn correlation matrix
+         Example
+        ------------
+        plot_correlation_matrix()
         """
         sns.heatmap(
             self.dataframe[["mnth", "weathersit", "temp", "windspeed", "cnt"]].corr(),
@@ -138,6 +141,9 @@ class DataHandler:
         Returns
         ------------
         Plot of the data of the chosen week
+        Example
+        ------------
+        plot_weekly_data(23)
         """
         if week > 102 or week < 0:
             raise ValueError("""Specified week outside of allowed range.
