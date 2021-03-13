@@ -214,7 +214,7 @@ class DataHandler:
         ---------
         forecast(3)
         """
-        if month > 12 or month < 0:
+        if month > 12 or month < 1:
             raise ValueError("""Specified month outside of allowed range.
                              Month must be an integer between 1 and 12.""")
 
